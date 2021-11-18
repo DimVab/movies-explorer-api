@@ -6,6 +6,7 @@ const { celebrate, Joi, errors } = require('celebrate');
 const { NODE_ENV, DB_ADRESS } = process.env;
 const { mongodbDevAdress } = require('./utils/config');
 const { createUser, login, logout } = require('./controllers/users');
+const auth = require('./middlewares/auth');
 
 const { PORT = 3000 } = process.env;
 
@@ -31,6 +32,8 @@ app.post('/signin', celebrate({
     password: Joi.string().required(),
   }),
 }), login);
+
+app.use(auth);
 
 app.post('/signout', logout);
 // потом убрать в защищённые роуты юзера
