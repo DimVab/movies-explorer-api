@@ -2,11 +2,13 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const { celebrate, Joi, errors } = require('celebrate');
+const cookieParser = require('cookie-parser');
 
 const { NODE_ENV, DB_ADRESS } = process.env;
 const { mongodbDevAdress } = require('./utils/config');
 const { createUser, login, logout } = require('./controllers/users');
 const auth = require('./middlewares/auth');
+const errorsHandler = require('./middlewares/errors-handler');
 
 const { PORT = 3000 } = process.env;
 
@@ -17,6 +19,7 @@ mongoose.connect(NODE_ENV !== 'production' ? mongodbDevAdress : DB_ADRESS, {
 });
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.post('/signup', celebrate({
   body: Joi.object().keys({
@@ -39,6 +42,7 @@ app.post('/signout', logout);
 // потом убрать в защищённые роуты юзера
 
 app.use(errors());
+app.use(errorsHandler);
 
 app.listen(PORT, () => {
   if (NODE_ENV !== 'production') {
