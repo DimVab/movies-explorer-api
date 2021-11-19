@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const BadRequestError = require('../errors/bad-request-error');
 const ConflictError = require('../errors/conflict-error');
+const NotFoundError = require('../errors/not-found-error');
 const { jwtSecretDev } = require('../utils/config');
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -57,4 +58,34 @@ module.exports.logout = (req, res, next) => {
     console.log(err);
     next(err);
   }
+};
+
+module.exports.getMyInfo = (req, res, next) => {
+  User.findById(req.user._id)
+    .orFail(() => {
+      throw new NotFoundError('Пользователь по указанному _id не найден');
+    })
+    .then((user) => {
+      res.status(200).send({ name: user.name, email: user.email, id: user._id });
+    })
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        next(new BadRequestError('Передан невалидный _id пользователя'));
+      }
+      next(err);
+    });
+};
+
+module.exports.updateProfile = (req, res, next) => {
+  const { name, email } = req.body;
+
+  User.findByIdAndUpdate(req.user._id, { name, email },
+    {
+      new: true,
+      runValidators: true,
+    })
+    .then((user) => {
+      res.status(200).send({ name: user.name, email: user.email });
+    })
+    .catch(next);
 };
