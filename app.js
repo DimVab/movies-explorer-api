@@ -5,7 +5,7 @@ const { celebrate, Joi, errors } = require('celebrate');
 const cookieParser = require('cookie-parser');
 
 const { NODE_ENV } = process.env;
-const { mongoUrl } = require('./utils/config');
+const { MONGO_URL } = require('./utils/config');
 const { createUser, login } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const errorsHandler = require('./middlewares/errors-handler');
@@ -15,7 +15,7 @@ const { PORT = 3000 } = process.env;
 
 const app = express();
 
-mongoose.connect(mongoUrl, {
+mongoose.connect(MONGO_URL, {
   useNewUrlParser: true,
 });
 
