@@ -1,43 +1,29 @@
-const routes = require('express').Router();
+const router = require('express').Router();
 const { celebrate, Joi } = require('celebrate');
 
-const { getMyInfo, logout, updateProfile } = require('../controllers/users');
-const { saveMovie, getMovies, deleteMovie } = require('../controllers/movies');
-const { urlPatternForJoi } = require('../utils/url-patterns');
+const userRoutes = require('./users');
+const movieRoutes = require('./movies');
+const { createUser, login, logout } = require('../controllers/users');
+const auth = require('../middlewares/auth');
 
-routes.post('/signout', logout);
-routes.get('/users/me', getMyInfo);
-
-routes.patch('/users/me', celebrate({
+router.post('/signup', celebrate({
   body: Joi.object().keys({
-    name: Joi.string().required().min(2).max(30),
     email: Joi.string().required().email(),
+    password: Joi.string().required(),
+    name: Joi.string().required().min(2).max(30),
   }),
-}), updateProfile);
+}), createUser);
 
-routes.get('/movies', getMovies);
-
-routes.post('/movies', celebrate({
+router.post('/signin', celebrate({
   body: Joi.object().keys({
-    country: Joi.string().required(),
-    director: Joi.string().required(),
-    duration: Joi.number().required(),
-    year: Joi.string().required(),
-    description: Joi.string().required(),
-    image: Joi.string().required().pattern(new RegExp(urlPatternForJoi)),
-    trailer: Joi.string().required().pattern(new RegExp(urlPatternForJoi)),
-    thumbnail: Joi.string().required().pattern(new RegExp(urlPatternForJoi)),
-    NameRU: Joi.string().required(),
-    NameEN: Joi.string().required(),
-    MovieId: Joi.string().required(),
-    owner: Joi.string().length(24).hex(),
+    email: Joi.string().required().email(),
+    password: Joi.string().required(),
   }),
-}), saveMovie);
+}), login);
 
-routes.delete('/movies/:movieId', celebrate({
-  params: Joi.object().keys({
-    movieId: Joi.string().length(24).hex(),
-  }),
-}), deleteMovie);
+router.use(auth);
+router.use('/users', userRoutes);
+router.use('/movies', movieRoutes);
+router.post('/signout', logout);
 
-module.exports = routes;
+module.exports = router;
