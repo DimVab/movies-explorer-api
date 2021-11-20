@@ -4,8 +4,8 @@ const mongoose = require('mongoose');
 const { celebrate, Joi, errors } = require('celebrate');
 const cookieParser = require('cookie-parser');
 
-const { NODE_ENV, DB_ADRESS } = process.env;
-const { mongodbDevAdress } = require('./utils/config');
+const { NODE_ENV } = process.env;
+const { mongoUrl } = require('./utils/config');
 const { createUser, login } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const errorsHandler = require('./middlewares/errors-handler');
@@ -15,7 +15,7 @@ const { PORT = 3000 } = process.env;
 
 const app = express();
 
-mongoose.connect(NODE_ENV !== 'production' ? mongodbDevAdress : DB_ADRESS, {
+mongoose.connect(mongoUrl, {
   useNewUrlParser: true,
 });
 
