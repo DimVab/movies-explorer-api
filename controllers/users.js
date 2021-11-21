@@ -95,5 +95,10 @@ module.exports.updateProfile = (req, res, next) => {
     .then((user) => {
       res.status(200).send({ name: user.name, email: user.email });
     })
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'MongoServerError' && err.code === 11000) {
+        next(new ConflictError(emailConflictErrorMessage));
+      }
+      next(err);
+    });
 };

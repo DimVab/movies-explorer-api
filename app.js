@@ -3,11 +3,14 @@ const express = require('express');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const cookieParser = require('cookie-parser');
+const helmet = require('helmet');
 
 const { NODE_ENV } = process.env;
 const { MONGO_URL } = require('./utils/config');
 const errorsHandler = require('./middlewares/errors-handler');
 const router = require('./routes/index');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
+const { limiter } = require('./middlewares/rate-limit');
 
 const { PORT = 3000 } = process.env;
 
@@ -17,10 +20,14 @@ mongoose.connect(MONGO_URL, {
   useNewUrlParser: true,
 });
 
+app.use(helmet());
 app.use(express.json());
 app.use(cookieParser());
+app.use(limiter);
 
+app.use(requestLogger);
 app.use(router);
+app.use(errorLogger);
 
 app.use(errors());
 app.use(errorsHandler);
