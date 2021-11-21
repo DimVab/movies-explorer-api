@@ -11,6 +11,7 @@ const errorsHandler = require('./middlewares/errors-handler');
 const router = require('./routes/index');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { limiter } = require('./middlewares/rate-limit');
+const cors = require('./middlewares/cors');
 
 const { PORT = 3000 } = process.env;
 
@@ -24,6 +25,7 @@ app.use(helmet());
 app.use(express.json());
 app.use(cookieParser());
 app.use(limiter);
+app.use(cors);
 
 app.use(requestLogger);
 app.use(router);
