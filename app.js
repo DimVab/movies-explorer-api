@@ -23,8 +23,7 @@ mongoose.connect(MONGO_URL, {
 app.use(helmet());
 app.use(express.json());
 app.use(cookieParser());
-// app.use(limiter);  /* так работает не правильно, тк учитывает скрытые запросы */
-// app.use('/users', limiter); /* работает, но тогда нужно вручную подключать ко всем маршрутам */
+app.use(limiter);
 
 app.use(requestLogger);
 app.use(router);
