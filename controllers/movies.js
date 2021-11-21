@@ -50,8 +50,8 @@ module.exports.saveMovie = (req, res, next) => {
 };
 
 module.exports.getMovies = (req, res, next) => {
-  Movie.find()
-    .then((movies) => res.status(200).send(movies))
+  Movie.find({ owner: req.user._id })
+    .then((userMovies) => res.status(200).send(userMovies))
     .catch(next);
 };
 
