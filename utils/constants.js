@@ -10,6 +10,7 @@ const emailConflictErrorMessage = 'Такой email уже существует'
 const unauthorizedErrorMessage = 'Необходима авторизация';
 const badAuthorizationErrorMessage = 'Неправильные почта или пароль';
 const notFoundErrorMessage = 'Маршрут не найден';
+const rateLimitErrorMessage = 'Превышен лимит запросов, пожалуйста, подождите немного';
 
 const authorizationSuccessMessage = 'Авторизация прошла успешно';
 const logoutSuccessMessage = 'Вы вышли из аккаунта';
@@ -31,4 +32,5 @@ module.exports = {
   authorizationSuccessMessage,
   logoutSuccessMessage,
   deleteMovieSuccessMessage,
+  rateLimitErrorMessage,
 }
