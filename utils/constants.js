@@ -33,4 +33,4 @@ module.exports = {
   logoutSuccessMessage,
   deleteMovieSuccessMessage,
   rateLimitErrorMessage,
-}
+};
