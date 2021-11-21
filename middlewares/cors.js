@@ -14,5 +14,6 @@ module.exports = (req, res, next) => {
     res.header('Access-Control-Allow-Headers', requestHeaders);
     return res.end();
   }
+  console.log('CORS работает');
   return next();
 };
