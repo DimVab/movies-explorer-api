@@ -7,6 +7,15 @@ const BadRequestError = require('../errors/bad-request-error');
 const ConflictError = require('../errors/conflict-error');
 const NotFoundError = require('../errors/not-found-error');
 const { JWT_SECRET } = require('../utils/config');
+const {
+  emailConflictErrorMessage,
+  userBadRequestErrorMessage,
+  emailBadRequestErrorMessage,
+  authorizationSuccessMessage,
+  logoutSuccessMessage,
+  userNotFoundErrorMessage,
+  userIdBadRequestErrorMessage,
+} = require('../utils/constants');
 
 module.exports.createUser = (req, res, next) => {
   const { name, email, password } = req.body;
@@ -18,10 +27,10 @@ module.exports.createUser = (req, res, next) => {
     }))
     .catch((err) => {
       if (err.name === 'MongoServerError' && err.code === 11000) {
-        next(new ConflictError('Такой email уже существует'));
+        next(new ConflictError(emailConflictErrorMessage));
       }
       if (err.name === 'ValidationError') {
-        next(new BadRequestError('Переданы невалидные данные при создании пользователя'));
+        next(new BadRequestError(userBadRequestErrorMessage));
       }
       next(err);
     });
@@ -31,7 +40,7 @@ module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
 
   if (!validator.isEmail(email)) {
-    throw new BadRequestError('Ошибка валидации Email');
+    throw new BadRequestError(emailBadRequestErrorMessage);
   }
 
   return User.findUserByCredentials(email, password)
@@ -45,14 +54,14 @@ module.exports.login = (req, res, next) => {
       res.cookie('jwt', token, {
         maxAge: 3600000 * 24 * 7,
         httpOnly: true,
-      }).status(200).send({ message: 'Авторизация прошла успешно' });
+      }).status(200).send({ message: authorizationSuccessMessage });
     })
     .catch(next);
 };
 
 module.exports.logout = (req, res, next) => {
   try {
-    res.clearCookie('jwt').status(200).send({ message: 'Вы вышли из аккаунта' });
+    res.clearCookie('jwt').status(200).send({ message: logoutSuccessMessage });
   } catch (err) {
     console.log(err);
     next(err);
@@ -62,14 +71,14 @@ module.exports.logout = (req, res, next) => {
 module.exports.getMyInfo = (req, res, next) => {
   User.findById(req.user._id)
     .orFail(() => {
-      throw new NotFoundError('Пользователь по указанному _id не найден');
+      throw new NotFoundError(userNotFoundErrorMessage);
     })
     .then((user) => {
       res.status(200).send({ name: user.name, email: user.email, id: user._id });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new BadRequestError('Передан невалидный _id пользователя'));
+        next(new BadRequestError(userIdBadRequestErrorMessage));
       }
       next(err);
     });
