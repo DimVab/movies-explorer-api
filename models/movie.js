@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const { urlPattern } = require('../utils/url-patterns');
+const validator = require('validator');
 
 const movieSchema = new mongoose.Schema({
   country: {
@@ -26,21 +26,21 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: true,
     validate: {
-      validator: (url) => urlPattern.test(url),
+      validator: (url) => validator.isURL(url),
     },
   },
   trailer: {
     type: String,
     required: true,
     validate: {
-      validator: (url) => urlPattern.test(url),
+      validator: (url) => validator.isURL(url),
     },
   },
   thumbnail: {
     type: String,
     required: true,
     validate: {
-      validator: (url) => urlPattern.test(url),
+      validator: (url) => validator.isURL(url),
     },
   },
   owner: {

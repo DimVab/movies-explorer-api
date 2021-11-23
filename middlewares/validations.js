@@ -1,5 +1,5 @@
+const validator = require('validator');
 const { celebrate, Joi } = require('celebrate');
-const { urlPatternForJoi } = require('../utils/url-patterns');
 
 const validateRegistration = celebrate({
   body: Joi.object().keys({
@@ -104,22 +104,34 @@ const validateMovieInfo = celebrate({
         'string.empty': 'Поле "description" не должно быть пустым',
         'any.required': 'Поле "description" обязательно для заполнения',
       }),
-    image: Joi.string().required().pattern(new RegExp(urlPatternForJoi))
-      .message('Поле "image" должно быть заполнено валидным URL-адресом')
+    image: Joi.string().required().custom((value, helpers) => {
+      if (validator.isURL(value)) {
+        return value;
+      }
+      return helpers.message('Поле "image" должно быть заполнено валидным URL-адресом');
+    })
       .messages({
         'string.base': 'Поле "image" должно быть строкой',
         'string.empty': 'Поле "image" не должно быть пустым',
         'any.required': 'Поле "image" обязательно для заполнения',
       }),
-    trailer: Joi.string().required().pattern(new RegExp(urlPatternForJoi))
-      .message('Поле "trailer" должно быть заполнено валидным URL-адресом')
+    trailer: Joi.string().required().custom((value, helpers) => {
+      if (validator.isURL(value)) {
+        return value;
+      }
+      return helpers.message('Поле "trailer" должно быть заполнено валидным URL-адресом');
+    })
       .messages({
         'string.base': 'Поле "trailer" должно быть строкой',
         'string.empty': 'Поле "trailer" не должно быть пустым',
         'any.required': 'Поле "trailer" обязательно для заполнения',
       }),
-    thumbnail: Joi.string().required().pattern(new RegExp(urlPatternForJoi))
-      .message('Поле "thumbnail" должно быть заполнено валидным URL-адресом')
+    thumbnail: Joi.string().required().custom((value, helpers) => {
+      if (validator.isURL(value)) {
+        return value;
+      }
+      return helpers.message('Поле "thumbnail" должно быть заполнено валидным URL-адресом');
+    })
       .messages({
         'string.base': 'Поле "thumbnail" должно быть строкой',
         'string.empty': 'Поле "thumbnail" не должно быть пустым',
