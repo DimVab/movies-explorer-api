@@ -137,22 +137,22 @@ const validateMovieInfo = celebrate({
         'string.empty': 'Поле "thumbnail" не должно быть пустым',
         'any.required': 'Поле "thumbnail" обязательно для заполнения',
       }),
-    NameRU: Joi.string().required()
+    nameRU: Joi.string().required()
       .messages({
         'string.base': 'Поле "nameRU" должно быть строкой',
         'string.empty': 'Поле "nameRU" не должно быть пустым',
         'any.required': 'Поле "nameRU" обязательно для заполнения',
       }),
-    NameEN: Joi.string().required()
+    nameEN: Joi.string().required()
       .messages({
         'string.base': 'Поле "nameEN" должно быть строкой',
         'string.empty': 'Поле "nameEN" не должно быть пустым',
         'any.required': 'Поле "nameEN" обязательно для заполнения',
       }),
-    MovieId: Joi.string().required()
+    movieId: Joi.number().required()
       .messages({
-        'string.base': 'Поле "MovieId" должно быть строкой',
-        'string.empty': 'Поле "MovieId" не должно быть пустым',
+        'number.base': 'Поле "MovieId" должно быть числом',
+        'number.empty': 'Поле "MovieId" не должно быть пустым',
         'any.required': 'Поле "MovieId" обязательно для заполнения',
       }),
     owner: Joi.string().length(24).hex()

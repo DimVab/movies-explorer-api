@@ -19,10 +19,10 @@ module.exports.saveMovie = (req, res, next) => {
     description,
     image,
     trailer,
-    NameRU,
-    NameEN,
+    nameRU,
+    nameEN,
     thumbnail,
-    MovieId,
+    movieId,
   } = req.body;
   const owner = req.user._id;
 
@@ -34,15 +34,16 @@ module.exports.saveMovie = (req, res, next) => {
     description,
     image,
     trailer,
-    NameRU,
-    NameEN,
+    nameRU,
+    nameEN,
     thumbnail,
-    MovieId,
+    movieId,
     owner,
   })
     .then((movie) => res.status(200).send(movie))
     .catch((err) => {
       if (err.name === 'ValidationError') {
+        console.log(err);
         next(new BadRequestError(badRequestErrorMessage));
       } else {
         next(err);
