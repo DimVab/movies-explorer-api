@@ -46,9 +46,9 @@
 
 ## Запуск проекта
 
-`npm start` - запускает сервер
+`npm start` - запускает сервер  
 `npm run dev` — запускает сервер с hot-reload
 
-**Ссылки на приложение:**
-http://51.250.0.189
+**Ссылки на приложение:**  
+http://51.250.0.189  
 http://api.movies-explorer.vab.nomoredomains.work
