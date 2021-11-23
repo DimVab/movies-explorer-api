@@ -1,6 +1,5 @@
 const badRequestErrorMessage = 'Переданы некорректные данные';
 const userBadRequestErrorMessage = 'Переданы невалидные данные при создании пользователя';
-const emailBadRequestErrorMessage = 'Ошибка валидации Email';
 const userNotFoundErrorMessage = 'Пользователь по указанному _id не найден';
 const movieNotFoundErrorMessage = 'Фильм по указанному _id не найден';
 const userIdBadRequestErrorMessage = 'Передан невалидный _id пользователя';
@@ -19,7 +18,6 @@ const deleteMovieSuccessMessage = 'Фильм удалён';
 module.exports = {
   badRequestErrorMessage,
   userBadRequestErrorMessage,
-  emailBadRequestErrorMessage,
   userNotFoundErrorMessage,
   movieNotFoundErrorMessage,
   userIdBadRequestErrorMessage,

@@ -1,4 +1,3 @@
-const validator = require('validator');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -10,7 +9,6 @@ const { JWT_SECRET } = require('../utils/config');
 const {
   emailConflictErrorMessage,
   userBadRequestErrorMessage,
-  emailBadRequestErrorMessage,
   authorizationSuccessMessage,
   logoutSuccessMessage,
   userNotFoundErrorMessage,
@@ -38,10 +36,6 @@ module.exports.createUser = (req, res, next) => {
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
-
-  if (!validator.isEmail(email)) {
-    throw new BadRequestError(emailBadRequestErrorMessage);
-  }
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
