@@ -21,13 +21,13 @@ mongoose.connect(MONGO_URL, {
   useNewUrlParser: true,
 });
 
+app.use(requestLogger);
+app.use(limiter);
 app.use(helmet());
 app.use(express.json());
 app.use(cookieParser());
-app.use(limiter);
 app.use(cors);
 
-app.use(requestLogger);
 app.use(router);
 app.use(errorLogger);
 
