@@ -12,7 +12,6 @@ const {
   authorizationSuccessMessage,
   logoutSuccessMessage,
   userNotFoundErrorMessage,
-  userIdBadRequestErrorMessage,
 } = require('../utils/constants');
 
 module.exports.createUser = (req, res, next) => {
@@ -26,11 +25,11 @@ module.exports.createUser = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'MongoServerError' && err.code === 11000) {
         next(new ConflictError(emailConflictErrorMessage));
-      }
-      if (err.name === 'ValidationError') {
+      } else if (err.name === 'ValidationError') {
         next(new BadRequestError(userBadRequestErrorMessage));
+      } else {
+        next(err);
       }
-      next(err);
     });
 };
 
@@ -70,12 +69,7 @@ module.exports.getMyInfo = (req, res, next) => {
     .then((user) => {
       res.status(200).send({ name: user.name, email: user.email, id: user._id });
     })
-    .catch((err) => {
-      if (err.name === 'CastError') {
-        next(new BadRequestError(userIdBadRequestErrorMessage));
-      }
-      next(err);
-    });
+    .catch(next);
 };
 
 module.exports.updateProfile = (req, res, next) => {
@@ -92,7 +86,8 @@ module.exports.updateProfile = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'MongoServerError' && err.code === 11000) {
         next(new ConflictError(emailConflictErrorMessage));
+      } else {
+        next(err);
       }
-      next(err);
     });
 };

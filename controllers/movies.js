@@ -44,8 +44,9 @@ module.exports.saveMovie = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new BadRequestError(badRequestErrorMessage));
+      } else {
+        next(err);
       }
-      next(err);
     });
 };
 
@@ -63,18 +64,18 @@ module.exports.deleteMovie = (req, res, next) => {
     .then((movie) => movie.owner.toString())
     .then((movieOwnerId) => {
       if (req.user._id === movieOwnerId) {
-        Movie.findByIdAndDelete(req.params.movieId)
+        return Movie.findByIdAndDelete(req.params.movieId)
           .then(() => {
             res.status(200).send({ message: deleteMovieSuccessMessage });
           });
-      } else {
-        throw new ForbiddenError(forbiddenErrorMessage);
       }
+      throw new ForbiddenError(forbiddenErrorMessage);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
         next(new BadRequestError(movieIdBadRequestErrorMessage));
+      } else {
+        next(err);
       }
-      next(err);
     });
 };

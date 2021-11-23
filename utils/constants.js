@@ -2,7 +2,6 @@ const badRequestErrorMessage = 'Переданы некорректные дан
 const userBadRequestErrorMessage = 'Переданы невалидные данные при создании пользователя';
 const userNotFoundErrorMessage = 'Пользователь по указанному _id не найден';
 const movieNotFoundErrorMessage = 'Фильм по указанному _id не найден';
-const userIdBadRequestErrorMessage = 'Передан невалидный _id пользователя';
 const movieIdBadRequestErrorMessage = 'Передан невалидный _id фильма';
 const forbiddenErrorMessage = 'Вам запрещено удалять чужие фильмы';
 const emailConflictErrorMessage = 'Такой email уже существует';
@@ -20,7 +19,6 @@ module.exports = {
   userBadRequestErrorMessage,
   userNotFoundErrorMessage,
   movieNotFoundErrorMessage,
-  userIdBadRequestErrorMessage,
   movieIdBadRequestErrorMessage,
   forbiddenErrorMessage,
   emailConflictErrorMessage,
