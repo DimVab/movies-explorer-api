@@ -1,12 +1,14 @@
 module.exports = (req, res, next) => {
-  const allowedCors = [
+/*   const allowedCors = [
     'http://localhost:3000',
+    'http://localhost:3001',
   ];
   const { origin } = req.headers;
   if (allowedCors.includes(origin)) {
     res.header('Access-Control-Allow-Origin', origin);
-  }
-  res.header('Access-Control-Allow-Credentials', true);
+  } */
+  res.header('Access-Control-Allow-Origin', req.headers.origin);
+  res.header('Access-Control-Allow-Credentials', 'true');
 
   const requestHeaders = req.headers['access-control-request-headers'];
   if (req.method === 'OPTIONS') {

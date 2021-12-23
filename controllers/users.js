@@ -61,6 +61,15 @@ module.exports.logout = (req, res, next) => {
   }
 };
 
+module.exports.checkToken = (req, res, next) => {
+  try {
+    res.status(200).send({ message: authorizationSuccessMessage });
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
 module.exports.getMyInfo = (req, res, next) => {
   User.findById(req.user._id)
     .orFail(() => {
