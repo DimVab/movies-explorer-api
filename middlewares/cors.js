@@ -1,12 +1,12 @@
 module.exports = (req, res, next) => {
-/*   const allowedCors = [
-    'http://localhost:3000',
-    'http://localhost:3001',
+   const allowedCors = [
+    'https://movies-explorer.vab.nomoredomains.work/',
+    'http://movies-explorer.vab.nomoredomains.work/',
   ];
   const { origin } = req.headers;
   if (allowedCors.includes(origin)) {
     res.header('Access-Control-Allow-Origin', origin);
-  } */
+  }
   res.header('Access-Control-Allow-Origin', req.headers.origin);
   res.header('Access-Control-Allow-Credentials', 'true');
 
